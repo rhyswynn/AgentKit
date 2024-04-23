@@ -114,6 +114,8 @@ Currently, the built-in API supports OpenAI and Anthropic, see https://pypi.org/
 
 To use the OpenAI models, set environment variables `OPENAI_KEY` and `OPENAI_ORG`. Alternatively, you can put the openai 'key' and 'organization' in the first 2 lines of `~/.openai/openai.key`.
 
+To use the Azure OpenAI models, set environment variables `AZURE_OPENAI_KEY`, `AZURE_OPENAI_ENDPOINT`, and `DEPLOYMENT_NAME`. Be sure to specify the same model as the deployment is based on.
+
 To use the Anthropic models, set environment variable `ANTHROPIC_KEY`. Alternatively, you can put the anthropic 'key' in 3rd line of `~/.openai/openai.key`.
 
 # Using AgentKit without Programming Experience

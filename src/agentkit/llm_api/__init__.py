@@ -8,12 +8,6 @@ def get_token_counts():
     global token_counter
     return token_counter
 
-def get_query(LLM_name):
-    global token_counter
-    token_counter["token_completion"][LLM_name] = 0
-    token_counter["token_prompt"][LLM_name] = 0
-    token_counter["api_calls"][LLM_name] = 0
-
 def query_gpt_chat(model):
     from .GPT import GPT_chat
     global token_counter

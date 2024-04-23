@@ -2,29 +2,39 @@ try:
     import openai
 except ImportError:
     raise ImportError("Please install openai to use built-in LLM API.")
-from openai import OpenAI
+
 import time
 import os
 from .utils import match_model
 from .base import BaseModel
 
-if os.environ.get("OPENAI_KEY") is None:
-    print("Environment variable for OpenAI key not found, using OpenAI API key from ~/.openai/openai.key.")
-    if not os.path.exists(os.path.join(os.path.expanduser('~'), ".openai/openai.key")):
-        raise FileNotFoundError("Please create a file at ~/.openai/openai.key with your OpenAI API key and organization ID. The first line should be your API key and the second line should be your organization ID.")
+if os.environ.get("AZURE_OPENAI_KEY") is None:
+    from openai import OpenAI
+    if os.environ.get("OPENAI_KEY") is None:
+        print("Environment variable for OpenAI key not found, using OpenAI API key from ~/.openai/openai.key.")
+        if not os.path.exists(os.path.join(os.path.expanduser('~'), ".openai/openai.key")):
+            raise FileNotFoundError("Please create a file at ~/.openai/openai.key with your OpenAI API key and organization ID. The first line should be your API key and the second line should be your organization ID.")
+        else:
+            with open(os.path.join(os.path.expanduser('~'), ".openai/openai.key"), 'r') as f:
+                org_key = f.readlines()
+                OpenAI_KEY = org_key[0].strip()
+                OpenAI_ORG = org_key[1].strip()
+
     else:
-        with open(os.path.join(os.path.expanduser('~'), ".openai/openai.key"), 'r') as f:
-            org_key = f.readlines()
-            OpenAI_KEY = org_key[0].strip()
-            OpenAI_ORG = org_key[1].strip()
+        print("Using OpenAI API key from environment variable.")
+        OpenAI_KEY = os.environ.get("OPENAI_KEY")
+        OpenAI_ORG = os.environ.get("OPENAI_ORG")
+    client = OpenAI(
+        api_key=OpenAI_KEY,
+        organization=OpenAI_ORG,
+    )
 else:
-    print("Using OpenAI API key from environment variable.")
-    OpenAI_KEY = os.environ.get("OPENAI_KEY")
-    OpenAI_ORG = os.environ.get("OPENAI_ORG")
-client = OpenAI(
-    api_key=OpenAI_KEY,
-    organization=OpenAI_ORG,
-)
+    from openai import AzureOpenAI
+    client = AzureOpenAI(
+        api_key=os.getenv("AZURE_OPENAI_KEY"),  
+        api_version="2024-02-15-preview",
+        azure_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
+    )
 
 class GPT_chat(BaseModel):
 
@@ -45,8 +55,12 @@ class GPT_chat(BaseModel):
         messages = self.shrink_msg(messages, shrink_idx, model_max-max_gen)
         while(True):
             try:
+                if os.environ.get("DEPLOYMENT_NAME") is None:
+                    model_name=self.name
+                else:
+                    model_name=os.environ.get("DEPLOYMENT_NAME")
                 completion = client.chat.completions.create(
-                    model=self.name,
+                    model=model_name,
                     messages=messages,
                     temperature=temp,
                     max_tokens=max_gen,
