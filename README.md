@@ -120,6 +120,27 @@ To use the Azure OpenAI models, set environment variables `AZURE_OPENAI_KEY`, `A
 
 To use the Anthropic models, set environment variable `ANTHROPIC_KEY`. Alternatively, you can put the anthropic 'key' in 3rd line of `~/.openai/openai.key`.
 
+# Additional Helper Actions
+
+The built-in `agentkitmulti.helpers` functions require installing with `[all]` setting. See [the installation guide](#Installation) for details.
+
+Currently, the additional helpers functions supports URLQuery and URLNode base elements. These are used for interacting with any external service. The callback function accepts a dictionary of properties that can be used for flexible connections. currently an example WeatherQuery is in place that can get current weather details from a pre-defined location.
+
+To use the URL elements, create a properties dictionary and reference the WeatherQuery() function in a URLNode object, passing the dictionary as a parameter:
+```python
+import agentkitmulti
+from agentkitmulti import Graph
+from agentkitmulti.helpers.url_query import WeatherQuery, URLNode
+graph = Graph()
+
+weatherProps = {}
+weatherProps['url'] = 'https://weather.com/weather/today/l/d13581dc3bbd72eb552966ce2b1355f0823288ff9a67cba2763a14973b432b32' # Beaufort
+
+subtask = "What is the weather forecast for Beaufort, SC?"
+node = URLNode(subtask, subtask, graph, WeatherQuery(weatherProps), agentkitmulti.compose_prompt.BaseComposePrompt(), verbose=verbose)
+graph.add_node(node)
+```
+
 # Using AgentKitMulti without Programming Experience
 
 First, follow [the installation guide](#Installation) to install AgentKit with `[all]` setting.
