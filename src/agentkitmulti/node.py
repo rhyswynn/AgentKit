@@ -17,14 +17,14 @@ class SimpleDBNode(BaseNode):
     Attributes:
         db (Any): Database object.
     """
-    def __init__(self, key:str, prompt: str, graph: Graph, query_llm: Callable, compose_prompt: ComposePromptDB, database: t.Any, after_query: BaseAfterQuery = None, error_msg_fn: Callable[[list, str, AfterQueryError], list] = error_msg_default, verbose: bool = False, token_counter: Callable = None):
+    def __init__(self, key:str, prompt: str, graph: Graph, query_function: Callable, compose_prompt: ComposePromptDB, database: t.Any, after_query: BaseAfterQuery = None, error_msg_fn: Callable[[list, str, AfterQueryError], list] = error_msg_default, verbose: bool = False, token_counter: Callable = None):
         """Initializes the SimpleDBNode class.
 
         Args:
             key (str): Unique key for the node.
             prompt (str): Prompt for the node.
             graph (Graph): Graph object.
-            query_llm (Callable): Function to query the LLM.
+            query_function (Callable): Function to query the LLM.
             compose_prompt (ComposePromptDB): ComposePromptDB object.
             database (Any): Database object.
             after_query (BaseAfterQuery): AfterQuery object.
@@ -32,7 +32,7 @@ class SimpleDBNode(BaseNode):
             verbose (bool): Verbose flag.
             token_counter (Callable): Function to count tokens.
         """
-        super().__init__(key, prompt, graph, query_llm, compose_prompt, after_query=after_query, error_msg_fn=error_msg_fn, verbose=verbose, token_counter=token_counter)
+        super().__init__(key, prompt, graph, query_function, compose_prompt, after_query=after_query, error_msg_fn=error_msg_fn, verbose=verbose, token_counter=token_counter)
         self.db: t.Any = database
         self._compose_prompt.set_node(self)
         self.rendered_prompt = None

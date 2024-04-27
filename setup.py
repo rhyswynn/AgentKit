@@ -2,24 +2,24 @@ import setuptools
 import pkg_resources
 import pathlib
 
-PKG_NAME = "agentkit-llm"
-VERSION = "0.1.5"
+PKG_NAME = "agentkit-multi"
+VERSION = "0.1.0"
 EXTRAS = {
     "logging": ["wandb"],
-    "all": ["wandb", "openai", "anthropic", "tiktoken"],
+    "all": ["wandb", "openai", "anthropic", "tiktoken", "bs4"],
 }
 
 setuptools.setup(
     name=PKG_NAME,
     version=VERSION,
-    author="AgentKit Team",
-    description='A LLM prompting framework for LLM agents',
-    url="https://github.com/Holmeswww/AgentKit",
+    author="AgentKitMulti Team",
+    description='An LLM prompting and action framework for LLM agents',
+    url="https://github.com/rhyswynn/AgentKitMulti",
     long_description=pathlib.Path('README.md').read_text(),
     long_description_content_type='text/markdown',
     packages=setuptools.find_namespace_packages('src'),
     package_dir={'': 'src'},
-    entry_points={'console_scripts': ['agentkit=agentkit.run_gui:main']},
+    entry_points={'console_scripts': ['agentkitmulti=agentkitmulti.run_gui:main']},
     install_requires = ['colorama', 'numpy'],
     extras_require=EXTRAS,
     include_package_data=True,

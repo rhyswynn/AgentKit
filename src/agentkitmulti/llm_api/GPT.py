@@ -32,7 +32,7 @@ else:
     from openai import AzureOpenAI
     client = AzureOpenAI(
         api_key=os.getenv("AZURE_OPENAI_KEY"),  
-        api_version="2024-02-15-preview",
+        api_version=os.getenv("AZURE_OPENAI_VERSION"),
         azure_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
     )
 
@@ -55,10 +55,10 @@ class GPT_chat(BaseModel):
         messages = self.shrink_msg(messages, shrink_idx, model_max-max_gen)
         while(True):
             try:
-                if os.environ.get("DEPLOYMENT_NAME") is None:
+                if os.environ.get("AZURE_OPENAI_DEPLOYMENT") is None:
                     model_name=self.name
                 else:
-                    model_name=os.environ.get("DEPLOYMENT_NAME")
+                    model_name=os.environ.get("AZURE_OPENAI_DEPLOYMENT")
                 completion = client.chat.completions.create(
                     model=model_name,
                     messages=messages,

@@ -6,12 +6,12 @@ sys.path.insert(0, os.path.abspath('../../src'))
 
 # -- Project information
 
-project = 'AgentKit'
-copyright = '2024, AgentKit Developers'
+project = 'AgentKitMulti'
+copyright = '2024, AgentKitMulti Developers'
 author = 'Yue Wu'
 
 release = '0.1'
-version = '0.1.5'
+version = '0.1.0'
 
 # -- General configuration
 

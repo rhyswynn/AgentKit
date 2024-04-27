@@ -1,11 +1,11 @@
 Dynamic Components
 =====
 
-.. figure:: https://github.com/Holmeswww/AgentKit/raw/main/imgs/node_archi.png
+.. figure:: https://github.com/Holmeswww/AgentKitMulti/raw/main/imgs/node_archi.png
     :scale: 80 %
     :alt: Illustration of what's happening inside a node in AgentKit
 
-    Each node in AgentKit takes outputs from its dependencies and outputs a string to complete a predefined subtask. The orange components (After-query) are optional and can be further customized with minimal programming through the AgentKit API. 
+    Each node in AgentKitMulti takes outputs from its dependencies and outputs a string to complete a predefined subtask. The orange components (After-query) are optional and can be further customized with minimal programming through the AgentKit API. 
     **Right**: Nodes can be dynamically added/removed during the inference time. For example, the after-query operation of :math:`n_7` adds a conditional node :math:`n_{+}/n_{-}` based on a yes/no answer from the LLM to the node query. This induces conditional branching.
 
 To support advanced capabilities such as branching, AgentKit offers API for user to dynamically modify the DAG at inference time (Figure right).
@@ -18,17 +18,17 @@ Dynamic modifications are typically performed in the after-query phase of a node
 Conditional Adding Nodes/Edges
 ----------------
 Nodes/edges can be added conditionally based on the output of the LLM.
-AgentKit provides helper functions to add nodes and edges during evaluation:
+AgentKitMulti provides helper functions to add nodes and edges during evaluation:
 
-.. autofunction:: agentkit.graph.Graph.add_temporary_node
-.. autofunction:: agentkit.graph.Graph.add_edge_temporary
+.. autofunction:: agentkitmulti.graph.Graph.add_temporary_node
+.. autofunction:: agentkitmulti.graph.Graph.add_edge_temporary
 
 The following example demonstrates how to add a conditional node based on a 'yes/no' answer from the LLM.
 The after-query operation adds a conditional node based on the parsed JSON answer from the LLM.
 
 .. code-block:: python
 
-    class AddNodeAfterQuery(agentkit.after_query.JsonAfterQuery):
+    class AddNodeAfterQuery(agentkitmulti.after_query.JsonAfterQuery):
 
             def __init__(self):
             super().__init__()
@@ -72,7 +72,7 @@ In an agent setting, it is common to save computation by re-using outputs from t
 For example, if the plan does not need to be updated, we can skip all the nodes that are related to the planner.
 AgentKit provides a helper function to skip certain nodes and re-use the saved outputs:
 
-.. autofunction:: agentkit.graph.Graph.skip_nodes_temporary
+.. autofunction:: agentkitmulti.graph.Graph.skip_nodes_temporary
 
 The following example demonstrates how to skip nodes based on a 'yes/no' answer from the LLM.
 
@@ -97,15 +97,15 @@ The following example demonstrates how to skip nodes based on a 'yes/no' answer 
 
 Conditional Branching
 ----------------
-AgentKit allows users to manage branching in the graph by conditionally removing edges between nodes:
+AgentKitMulti allows users to manage branching in the graph by conditionally removing edges between nodes:
 
-.. autofunction:: agentkit.graph.Graph.remove_edge_temporary
+.. autofunction:: agentkitmulti.graph.Graph.remove_edge_temporary
 
 The following example demonstrates how to direct and manage the 'flow' of the graph between two pre-built leaf nodes, based on the output of the LLM.
 
 .. code-block:: python
 
-    class YesNoAfterQuery(agentkit.after_query.JsonAfterQuery):
+    class YesNoAfterQuery(agentkitmulti.after_query.JsonAfterQuery):
 
             def __init__(self):
             super().__init__()

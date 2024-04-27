@@ -1,5 +1,2 @@
 colorama
 numpy
-openai
-tiktoken
-wandb

@@ -2,12 +2,12 @@ import json
 import os
 from colorama import Fore, Style, init
 try:
-    import agentkit
-    from agentkit import Graph, BaseNode
-    import agentkit.llm_api
+    import agentkitmulti
+    from agentkitmulti import Graph, BaseNode
+    import agentkitmulti.llm_api
 except ImportError:
-    print("Please install the agentkit package.")
-    print("Run: pip install agentkit-llm")
+    print("Please install the agentkitmulti package.")
+    print("Run: pip install agentkit-multi")
     exit(1)
 
 class DAG:
@@ -185,12 +185,12 @@ def main():
         press_enter_to_continue()
     
     llm_name = input(Fore.MAGENTA + "Enter the name of the LLM to generate the graph (e.g., gpt-4-turbo-preview): ").strip()
-    LLM_API_FUNCTION = agentkit.llm_api.get_query(llm_name)
+    LLM_API_FUNCTION = agentkitmulti.llm_api.get_query(llm_name)
     graph = Graph()
 
     edges = []
     for node_name, node_content in dag.nodes.items():
-        node = BaseNode(node_name, node_content, graph, LLM_API_FUNCTION, agentkit.compose_prompt.BaseComposePrompt())
+        node = BaseNode(node_name, node_content, graph, LLM_API_FUNCTION, agentkitmulti.compose_prompt.BaseComposePrompt())
         graph.add_node(node)
 
         for dep in dag.edges[node_name]:
