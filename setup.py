@@ -3,7 +3,7 @@ import pkg_resources
 import pathlib
 
 PKG_NAME = "agentkit-multi"
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 EXTRAS = {
     "logging": ["wandb"],
     "all": ["wandb", "openai", "anthropic", "tiktoken", "bs4"],

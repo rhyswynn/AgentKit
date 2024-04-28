@@ -120,6 +120,26 @@ To use the Azure OpenAI models, set environment variables `AZURE_OPENAI_KEY`, `A
 
 To use the Anthropic models, set environment variable `ANTHROPIC_KEY`. Alternatively, you can put the anthropic 'key' in 3rd line of `~/.openai/openai.key`.
 
+
+# Built-in Ollama-API
+
+To use Ollama models, see https://github.com/ollama/ollama for installation instructions. Initiating the query_function works similar to the other LLM query functions, except for some additional parameters:
+```python
+import agentkitmulti
+from agentkitmulti import Graph
+import agentkitmulti.llm_api
+graph = Graph()
+
+ollama_url = 'http://localhost:11434'
+tokenmodel_path = '../../Models/Meta-Llama-3-8B-Instruct/tokenizer.model'
+LLM_API_FUNCTION = agentkitmulti.llm_api.get_query("llama3",ollama_url=ollama_url,tokenmodel_path=tokenmodel_path)
+
+subtask = "What are things to do in Beaufort, SC at this time of year?" 
+node = BaseNode("subtask", subtask, graph, LLM_API_FUNCTION, agentkitmulti.compose_prompt.BaseComposePrompt(), verbose=False)
+graph.add_node(node)
+```
+Any supported model can be specified and the model download will be initiated by the service. An appropriate tokenizer file must be identified and specified in the function declaration.
+
 # Additional Helper Actions
 
 The built-in `agentkitmulti.helpers` functions require installing with `[all]` setting. See [the installation guide](#Installation) for details.
@@ -137,7 +157,7 @@ weatherProps = {}
 weatherProps['url'] = 'https://weather.com/weather/today/l/d13581dc3bbd72eb552966ce2b1355f0823288ff9a67cba2763a14973b432b32' # Beaufort
 
 subtask = "What is the weather forecast for Beaufort, SC?"
-node = URLNode(subtask, subtask, graph, WeatherQuery(weatherProps), agentkitmulti.compose_prompt.BaseComposePrompt(), verbose=verbose)
+node = URLNode(subtask, subtask, graph, WeatherQuery(weatherProps), agentkitmulti.compose_prompt.BaseComposePrompt(), verbose=False)
 graph.add_node(node)
 ```
 
